@@ -1,0 +1,28 @@
+
+.messages {
+    width: 100%;
+    max-width: 396px;
+    margin: 0 auto 20px auto;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.message {
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.error {
+    background-color: #ffebee;
+    color: #c62828;
+    border: 1px solid #ef9a9a;
+}
+
+.success {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #a5d6a7;
+}

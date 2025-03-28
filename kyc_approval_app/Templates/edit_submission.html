@@ -1,0 +1,121 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KYC Request Form</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'kyc_submission.css' %}">
+</head>
+<body>
+    <div class="container">
+        <form method="post" enctype="multipart/form-data" action="{% url 'update_kyc_request' kyc_request.id %}">
+            {% csrf_token %}
+            
+            <div class="section-header">
+                <h2>Your Profile</h2>
+                <a href="{% url 'edit_profile' %}" class="edit-profile-link">Edit Profile</a>
+            </div>
+            
+            <div class="user-info-section">
+                <div class="user-info-grid">
+                    <div class="user-info-item">
+                        <strong>Full Name:</strong> {{ full_name }}
+                    </div>
+                    <div class="user-info-item">
+                        <strong>Date of Birth:</strong> {{ dob|date:"d M Y" }}
+                    </div>
+                    <div class="user-info-item">
+                        <strong>Gender:</strong> {{ gender }}
+                    </div>
+                    <div class="user-info-item">
+                        <strong>Phone Number:</strong> {{ phone }}
+                    </div>
+                    <div class="user-info-item">
+                        <strong>Address:</strong> {{ address }}
+                    </div>
+                    <div class="user-info-item">
+                        <strong>Email:</strong> {{email}}
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="section-header">
+                <h2>Documents</h2>
+            </div>
+            <div class="document-upload-section">
+                <div class="form-group">
+                    <label for="id_proof_name">ID Proof Type</label>
+                    <select id="id_proof_name" name="id_proof_name" required>
+                        <option value="">Select ID Proof Type</option>
+                        <option value="Aadhaar" {% if kyc_request.id_proof_name == "Aadhaar" %}selected{% endif %}>Aadhaar</option>
+                        <option value="PAN" {% if kyc_request.id_proof_name == "PAN" %}selected{% endif %}>PAN Card</option>
+                        <option value="DL" {% if kyc_request.id_proof_name == "DL" %}selected{% endif %}>Driving License</option>
+                        <option value="Passport" {% if kyc_request.id_proof_name == "Passport" %}selected{% endif %}>Passport</option>
+                        <option value="Voter ID" {% if kyc_request.id_proof_name == "Voter ID" %}selected{% endif %}>Voter ID</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+            
+                    
+                    <p class="uploaded-file" style="padding-bottom: 2%;">
+                        <strong>Submitted ID Proof File:</strong>  
+                        <a  href="{{ kyc_request.id_proof_file.url }}" target="_blank">📂 View Submitted File</a>
+                    </p>
+                    
+                    
+                    <div class="file-upload-container">
+                        <label for="id_proof_file" class="file-label">📄 Update ID Proof</label>
+                        <div class="file-input-group">
+                            <input type="file" id="id_proof_file" name="id_proof_file" accept=".pdf,.jpg,.jpeg,.png" >
+                        </div>
+                    </div>
+                    <div class="document-preview">
+                        Supported formats: PDF, JPG, PNG 
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="address_proof_name">Address Proof Type</label>
+                    <select id="address_proof_name" name="address_proof_name" required>
+                        <option value="">Select Address Proof Type</option>
+                        <option value="Aadhaar" {% if kyc_request.address_proof_name == "Aadhaar" %}selected{% endif %}>Aadhaar</option>
+                        <option value="Passport" {% if kyc_request.address_proof_name == "Passport" %}selected{% endif %}>Passport</option>
+                        <option value="Voter ID" {% if kyc_request.address_proof_name == "Voter ID" %}selected{% endif %}>Voter ID</option>
+                        <option value="Electricity Bill" {% if kyc_request.address_proof_name == "Electricity Bill" %}selected{% endif %}>Electricity Bill</option>
+                        <option value="Water Bill" {% if kyc_request.address_proof_name == "Water Bill" %}selected{% endif %}>Water Bill</option>
+                        <option value="Bank Statement" {% if kyc_request.address_proof_name == "Bank Statement" %}selected{% endif %}>Bank Statement</option>
+                        <option value="Rent Agreement" {% if kyc_request.address_proof_name == "Rent Agreement" %}selected{% endif %}>Rent Agreement</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <p class="uploaded-file" style="padding-bottom: 2%;">
+                        <strong>Submitted ID Proof File:</strong>  
+                        <a  href="{{ kyc_request.address_proof_file.url }}" target="_blank">📂 View Submitted File</a>
+                    </p>
+                    <div class="file-upload-container">
+                        <label for="id_proof_file" class="file-label">📄 Update Address Proof</label>
+                        <div class="file-input-group">
+                            <input type="file" id="id_proof_file" name="id_proof_file" accept=".pdf,.jpg,.jpeg,.png">
+                        </div>
+                    </div>
+                    
+
+                    <div class="document-preview">
+                        Supported formats: PDF, JPG, PNG 
+                    </div>
+                </div>
+            </div>
+
+            <div class="submit-section">
+                <button type="submit" class="btn">Update KYC Request</button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

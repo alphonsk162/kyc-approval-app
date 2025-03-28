@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KYC Approval - User Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'user_home_page.css' %}">
+</head>
+<body>
+    <div class="container">
+
+
+        <div class="user-info">
+            <div>
+                <h2>{{fullname}}</h2>
+                <p>Email:{{email}}</p>
+            </div>
+            <h1>KYC Approval Dashboard</h1>
+            <a href="{% url 'user_signout' %}" class="btn">Logout</a>
+        </div>
+
+        <div class="dashboard-actions">
+            <div class="action-card">
+                <h3>New KYC Request</h3>
+                <p>Submit a new KYC approval request with your documents</p>
+                <a href="{% url 'request_kyc_approval' %}" class="btn">Create Request</a>
+            </div>
+
+            <div class="action-card">
+                <h3>Profile Management</h3>
+                <p>Update your personal informations</p>
+                <a href="{% url 'edit_profile' %}" class="btn">Edit Profile</a>
+            </div>
+
+        </div>
+
+        <section class="requests-section">
+            <h2>My KYC Requests</h2>
+            <table class="requests-table">
+                <thead>
+                    <tr>
+                        <th>Request ID</th>
+                        <th>Submission Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in requests %}
+                    <tr>
+                        <td>KYC-{{ request.submitted_at|date:"Y-m-d" }}-{{request.id}}</td>
+                        <td>{{ request.submitted_at|date:"Y-m-d" }}</td>
+                        <td class="status-{{request.status}}">{{ request.status|upper }}</td>
+                        {% if request.status == 'approved' %}
+                        <td>
+                            <a href="" class="btn">View Details</a>
+                        </td>
+                        {% else %}
+                        <td>
+                            <a href="{% url 'edit_submission' request.id %}" class="btn">Edit Submission</a>
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        
+    </div>
+</body>
+</html>

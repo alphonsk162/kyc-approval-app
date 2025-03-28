@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KYC Request Form</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'kyc_submission.css' %}">
+</head>
+<body>
+    <div class="container">
+        <form method="post" enctype="multipart/form-data" action="{% url 'submit_request' %}">
+            {% csrf_token %}
+            
+            <div class="section-header">
+                <h2>User Information</h2>
+                <a href="{% url 'edit_profile' %}" class="edit-profile-link">Edit Profile</a>
+            </div>
+            
+            <div class="user-info-section">
+                <div class="user-info-grid">
+                    <div class="user-info-item">
+                        <strong>Full Name:</strong> {{ full_name }}
+                    </div>
+                    <div class="user-info-item">
+                        <strong>Date of Birth:</strong> {{ dob|date:"d M Y" }}
+                    </div>
+                    <div class="user-info-item">
+                        <strong>Gender:</strong> {{ gender }}
+                    </div>
+                    <div class="user-info-item">
+                        <strong>Phone Number:</strong> {{ phone }}
+                    </div>
+                    <div class="user-info-item">
+                        <strong>Address:</strong> {{ address }}
+                    </div>
+                    <div class="user-info-item">
+                        <strong>Email:</strong> {{email}}
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="section-header">
+                <h2>Document Upload</h2>
+            </div>
+            <div class="document-upload-section">
+                <div class="form-group">
+                    <label for="id_proof_name">ID Proof Type</label>
+                    <select id="id_proof_name" name="id_proof_name" required>
+                        <option value="">Select ID Proof Type</option>
+                        <option value="Aadhaar">Aadhaar</option>
+                        <option value="PAN">PAN Card</option>
+                        <option value="DL">Driving License</option>
+                        <option value="Passport">Passport</option>
+                        <option value="Voter ID">Voter ID</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="id_proof_file">ID Proof Document</label>
+                    <div class="file-input-group">
+                        <input type="file" id="id_proof_file" name="id_proof_file" accept=".pdf,.jpg,.jpeg,.png" required>
+                    </div>
+                    <div class="document-preview">
+                        Supported formats: PDF, JPG, PNG 
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="address_proof_name">Address Proof Type</label>
+                    <select id="address_proof_name" name="address_proof_name" required>
+                        <option value="">Select Address Proof Type</option>
+                        <option value="Aadhaar">Aadhaar</option>
+                        <option value="Passport">Passport</option>
+                        <option value="Voter ID">Voter ID</option>
+                        <option value="Electricity Bill">Electricity Bill</option>
+                        <option value="Water Bill">Water Bill</option>
+                        <option value="Bank Statement">Bank Statement</option>
+                        <option value="Rent Agreement">Rent Agreement</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="address_proof_file">Address Proof Document</label>
+                    <div class="file-input-group">
+                        <input type="file" id="address_proof_file" name="address_proof_file" accept=".pdf,.jpg,.jpeg,.png" required>
+                    </div>
+                    <div class="document-preview">
+                        Supported formats: PDF, JPG, PNG 
+                    </div>
+                </div>
+            </div>
+
+            <div class="submit-section">
+                <button type="submit" class="btn">Submit KYC Request</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

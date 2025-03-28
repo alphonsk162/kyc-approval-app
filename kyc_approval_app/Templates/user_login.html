@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KYC Approval Login</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'messages.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'user_login.css' %}">
+ 
+</head>
+<body>
+    <div class="login-container">
+        <h2>KYC Approval Login</h2>
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="login-methods">
+            <label>
+                <input type="radio" name="login-method" value="email" checked>
+                Email
+            </label>
+            <label>
+                <input type="radio" name="login-method" value="mobile">
+                Mobile
+            </label>
+        </div>
+
+        <form id="login-form" method="post" action="{% url 'user_signin' %}">
+            {% csrf_token %}
+            <div id="email-group" class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Enter your email" name="email" required>
+            </div>
+
+            <div id="mobile-group" class="form-group" style="display: none;">
+                <label for="mobile">Mobile Number</label>
+                <input type="tel" id="mobile" name="mobile" placeholder="Enter your phone number" 
+                pattern="[0-9]{10}" maxlength="10" required 
+                onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <button type="submit" class="submit-btn">Login</button>
+            <div id="error-message"></div>
+        </form>
+        <div class="form-footer">
+            <p>Don't have an account? <a href="{% url 'user_signup' %}">Sign Up</a></p>
+        </div>
+    </div>
+
+    <script>
+        const emailRadio = document.querySelector('input[value="email"]');
+        const mobileRadio = document.querySelector('input[value="mobile"]');
+        const emailGroup = document.getElementById('email-group');
+        const mobileGroup = document.getElementById('mobile-group');
+        const emailInput = document.getElementById('email');
+        const mobileInput = document.getElementById('mobile');
+        emailInput.required = true;
+        mobileInput.required = false;
+
+        function toggleLoginMethod() {
+            if (emailRadio.checked) {
+                emailGroup.style.display = 'block';
+                mobileGroup.style.display = 'none';
+                emailInput.required = true;
+                mobileInput.required = false;
+            } else {
+                emailGroup.style.display = 'none';
+                mobileGroup.style.display = 'block';
+                emailInput.required = false;
+                mobileInput.required = true;
+            }
+        }
+
+
+        emailRadio.addEventListener('change', toggleLoginMethod);
+        mobileRadio.addEventListener('change', toggleLoginMethod);
+
+
+    </script>
+</body>
+</html>
