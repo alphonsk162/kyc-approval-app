@@ -54,13 +54,17 @@
                         <td class="status-{{request.status}}">{{ request.status|upper }}</td>
                         {% if request.status == 'approved' %}
                         <td>
-                            <a href="" class="btn">View Details</a>
+                            <a href="{% url 'view_request' request.id %}" class="btn">View Details</a>
                         </td>
                         {% else %}
                         <td>
                             <a href="{% url 'edit_submission' request.id %}" class="btn">Edit Submission</a>
                         </td>
                         {% endif %}
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="no-requests">No requests</td>
                     </tr>
                     {% endfor %}
                 </tbody>

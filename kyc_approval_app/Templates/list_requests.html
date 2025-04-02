@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if status == 'approved' %}
+    <title>Approved Requests</title>
+    {% else %}
+    <title>Rejected Requests</title>
+    {% endif %}
+    <link rel="stylesheet" type="text/css" href="{% static 'officer_home_page.css' %}">
+</head>
+<section class="recent-requests">
+    {% if status == 'approved' %}
+    <h2>Approved Requests</h2>
+    {% else %}
+    <h2>Rejected Requests</h2>
+    {% endif %}
+    <table class="requests-table">
+        <thead>
+            <tr>
+                <th>Request ID</th>
+                <th>Applicant Name</th>
+                <th>Submitted Date</th>
+                {% if status == 'rejected' %}
+                <th>Reviewed Date</th>
+                {% endif %}
+                <th>View Details</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in requests %}
+            <tr>
+                <td>KYC-{{ request.submitted_at|date:"Y-m-d" }}-{{request.id}}</td>
+                <td>{{ request.citizen.full_name}}</td>
+                <td>{{request.submitted_at|date:"Y-m-d" }}</td>
+                {% if request.status == 'rejected'%}
+                <td>{{request.reviewed_at|date:"Y-m-d" }}</td>
+                {% endif %}
+                <td>
+                    <a href="{% url 'view_request' request.id %}" class="action-btn review">View Details</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="no-requests">No recent requests</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>

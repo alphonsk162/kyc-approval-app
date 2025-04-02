@@ -1,5 +1,12 @@
 from django.urls import path
-from .views import request_kyc_approval, submit_request, edit_profile, update_profile, edit_submission, update_kyc_request
+from .views import (
+    request_kyc_approval,
+    submit_request,
+    edit_profile,
+    update_profile,
+    edit_submission,
+    update_kyc_request,
+)
 
 urlpatterns = [
     path("request_kyc_approval/", request_kyc_approval, name="request_kyc_approval"),

@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KYC Request Form</title>
+    <title>Edit Submission</title>
     <link rel="stylesheet" type="text/css" href="{% static 'kyc_submission.css' %}">
+
 </head>
 <body>
     <div class="container">
@@ -73,9 +74,7 @@
                             <input type="file" id="id_proof_file" name="id_proof_file" accept=".pdf,.jpg,.jpeg,.png" >
                         </div>
                     </div>
-                    <div class="document-preview">
-                        Supported formats: PDF, JPG, PNG 
-                    </div>
+
                 </div>
 
                 <div class="form-group">
@@ -100,15 +99,19 @@
                     <div class="file-upload-container">
                         <label for="id_proof_file" class="file-label">📄 Update Address Proof</label>
                         <div class="file-input-group">
-                            <input type="file" id="id_proof_file" name="id_proof_file" accept=".pdf,.jpg,.jpeg,.png">
+                            <input type="file" id="address_proof_file" name="address_proof_file" accept=".pdf,.jpg,.jpeg,.png">
                         </div>
                     </div>
-                    
 
-                    <div class="document-preview">
-                        Supported formats: PDF, JPG, PNG 
+                </div>
+            {% if kyc_request.remarks %}
+                <div class="remarks section">
+                    <h2>Remarks</h2>
+                    <div class="remarks-content">
+                        <p>{{kyc_request.remarks }}</p>
                     </div>
                 </div>
+            {% endif %}
             </div>
 
             <div class="submit-section">

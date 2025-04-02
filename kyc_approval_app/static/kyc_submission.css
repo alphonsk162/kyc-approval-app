@@ -141,7 +141,7 @@ body {
     width: 100%;
 }
 
-.file-input-group input[type="file"]::-webkit-file-upload-button {
+.file-input-group input[type="file"] {
     background-color: #007bff;
     color: white;
     border: none;
@@ -151,6 +151,6 @@ body {
     transition: 0.3s;
 }
 
-.file-input-group input[type="file"]::-webkit-file-upload-button:hover {
+.file-input-group input[type="file"]:hover {
     background-color: #0056b3;
 }

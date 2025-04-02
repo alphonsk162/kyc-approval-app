@@ -1,1 +1,73 @@
-<h1>hello officer</h1>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Officer Home Page</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'officer_home_page.css' %}">
+</head>
+<div class="officer-dashboard">
+    <header class="dashboard-header">
+        <h1>Officer Dashboard</h1>
+        <div class="user-info">
+            <span class="welcome-text">Welcome, {{ officer_name }}</span>
+            <a href="{% url 'user_signout' %}" class="logout-btn">Logout</a>
+        </div>
+    </header>
+
+    <main class="dashboard-content">
+        <section class="request-overview">
+            <h2>Request Management</h2>
+            
+            <div class="request-stats">
+
+                
+                <div class="stat-card approved">
+                    <h3>Approved Requests</h3>
+                    <p class="stat-number">{{ approved_requests_count }}</p>
+                    <a href="{% url 'approved_requests' %}" class="view-btn">View Approved</a>
+                </div>
+                
+                <div class="stat-card rejected">
+                    <h3>Rejected Requests</h3>
+                    <p class="stat-number">{{ rejected_requests_count }}</p>
+                    <a href="{% url 'rejected_requests' %}" class="view-btn">View Rejected</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="recent-requests">
+            <h2>Pending Requests</h2>
+            <table class="requests-table">
+                <thead>
+                    <tr>
+                        <th>Request ID</th>
+                        <th>Applicant Name</th>
+                        <th>Submitted Date</th>
+                        <th>View Details</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in pending_requests %}
+                    <tr>
+                        <td>KYC-{{ request.submitted_at|date:"Y-m-d" }}-{{request.id}}</td>
+                        <td>{{ request.citizen.full_name}}</td>
+                        <td>{{request.submitted_at|date:"Y-m-d" }}</td>
+                        <td>
+                            <a href="{% url 'view_request' request.id %}" class="action-btn review">Review</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="no-requests">No requests</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </main>
+</div>
+
+
