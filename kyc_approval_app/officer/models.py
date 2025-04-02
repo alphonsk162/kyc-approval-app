@@ -4,9 +4,6 @@ from user.models import KYCRequest
 
 
 # Create your models here.
-class Officer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    username = models.CharField(max_length=255, unique=True)
 
 
 class RejectedRequest(models.Model):

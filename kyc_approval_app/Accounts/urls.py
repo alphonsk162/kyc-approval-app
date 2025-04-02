@@ -6,9 +6,13 @@ from .views import (
     user_home_page,
     user_signin,
     user_signout,
+    officer_login,
+    officer_signin,
 )
 
 urlpatterns = [
+    path("officer_login/", officer_login, name="officer_login"),
+    path("officer_signin/", officer_signin, name="officer_signin"),
     path("user_signup/", user_signup, name="user_signup"),
     path("register_user/", register_user, name="register_user"),
     path("user_login/", user_login, name="user_login"),

@@ -32,7 +32,7 @@ body {
     align-items: center;
 }
 
-.user-info-section, 
+.user-info-section,
 .document-upload-section {
     margin-bottom: 30px;
 }
@@ -59,7 +59,7 @@ body {
     font-weight: bold;
 }
 
-.form-group input, 
+.form-group input,
 .form-group select {
     width: 100%;
     padding: 10px;
@@ -118,7 +118,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 8px; 
+    gap: 8px;
     background-color: #f8f9fa;
     padding: 12px;
     border: 1px solid #ddd;
@@ -141,7 +141,7 @@ body {
     width: 100%;
 }
 
-.file-input-group input[type="file"] {
+.file-input-group input[type="file"]::-webkit-file-upload-button {
     background-color: #007bff;
     color: white;
     border: none;
@@ -151,6 +151,6 @@ body {
     transition: 0.3s;
 }
 
-.file-input-group input[type="file"]:hover {
+.file-input-group input[type="file"]::-webkit-file-upload-button:hover {
     background-color: #0056b3;
 }

@@ -13,7 +13,7 @@ def send_status_email(to_email, kyc_request):
     send_mail(
         subject,
         message_plain,
-        "your_email@example.com",
+        "alphons162@gmail.com",
         [to_email],
         fail_silently=False,
         html_message=message_html,

@@ -14,3 +14,8 @@ class Citizen(models.Model):
 
     def __str__(self):
         return self.full_name
+
+
+class Officer(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    username = models.CharField(max_length=255, unique=True)
