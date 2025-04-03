@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request log for {{request_obj.request_id}}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'officer_home_page.css' %}">
+</head>
+<section class="recent-requests">
+
+    <h2>{{request_obj.request_id}} - Submission History</h2>
+
+    <table class="requests-table">
+        <thead>
+            <tr>
+                <th>Submitted Date</th>
+                <th>Reviewed Date</th>
+                <th>Remarks</th>
+                <th>View Details</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in log %}
+            <tr>
+                <td>{{request.submitted_at|date:"Y-m-d" }}</td>
+                <td>{{request.reviewed_at|date:"Y-m-d" }}</td>
+                <td>{{request.remarks}}</td>
+                <td>
+                    <a href="{% url 'log_details' request.id %}" class="action-btn review">View Details</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="no-requests">No previous submissions</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>

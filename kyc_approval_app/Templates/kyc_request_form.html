@@ -1,22 +1,24 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KYC Request Form</title>
     <link rel="stylesheet" type="text/css" href="{% static 'kyc_submission.css' %}">
 </head>
+
 <body>
     <div class="container">
         <form method="post" enctype="multipart/form-data" action="{% url 'submit_request' %}">
             {% csrf_token %}
-            
+
             <div class="section-header">
                 <h2>User Information</h2>
                 <a href="{% url 'edit_profile' %}" class="edit-profile-link">Edit Profile</a>
             </div>
-            
+
             <div class="user-info-section">
                 <div class="user-info-grid">
                     <div class="user-info-item">
@@ -61,7 +63,8 @@
                 <div class="form-group">
                     <label for="id_proof_file">ID Proof Document</label>
                     <div class="file-input-group">
-                        <input type="file" id="id_proof_file" name="id_proof_file" accept=".pdf,.jpg,.jpeg,.png" required>
+                        <input type="file" id="id_proof_file" name="id_proof_file" accept=".pdf,.jpg,.jpeg,.png"
+                            required>
                     </div>
 
                 </div>
@@ -83,7 +86,8 @@
                 <div class="form-group">
                     <label for="address_proof_file">Address Proof Document</label>
                     <div class="file-input-group">
-                        <input type="file" id="address_proof_file" name="address_proof_file" accept=".pdf,.jpg,.jpeg,.png" required>
+                        <input type="file" id="address_proof_file" name="address_proof_file"
+                            accept=".pdf,.jpg,.jpeg,.png" required>
                     </div>
 
                 </div>
@@ -95,4 +99,5 @@
         </form>
     </div>
 </body>
+
 </html>

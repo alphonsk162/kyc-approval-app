@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% if status == 'approved' %}
     <title>Approved Requests</title>
+    {% elif status == 'pending' and search_result %}
+    <title>Pending Requests</title>
     {% else %}
     <title>Rejected Requests</title>
     {% endif %}
@@ -15,6 +17,8 @@
 <section class="recent-requests">
     {% if status == 'approved' %}
     <h2>Approved Requests</h2>
+    {% elif status == 'pending' and search_result %}
+    <h2>Search Results for {{search_input}}</h2>
     {% else %}
     <h2>Rejected Requests</h2>
     {% endif %}
@@ -34,8 +38,12 @@
         <tbody>
             {% for request in requests %}
             <tr>
-                <td>KYC-{{ request.submitted_at|date:"Y-m-d" }}-{{request.id}}</td>
+                <td>{{request.request_id}}</td>
+                {% if request.status in 'rejected approved'%}
+                <td>{{ request.request_full_name}}</td>
+                {% else %}
                 <td>{{ request.citizen.full_name}}</td>
+                {% endif %}
                 <td>{{request.submitted_at|date:"Y-m-d" }}</td>
                 {% if request.status == 'rejected'%}
                 <td>{{request.reviewed_at|date:"Y-m-d" }}</td>

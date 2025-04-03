@@ -16,6 +16,12 @@ def user_signup(request):
 
 
 def user_login(request):
+    if request.user.is_authenticated:
+        try:
+            officer_obj = Officer.objects.get(user=request.user)
+            return redirect("officer_home_page")
+        except Officer.DoesNotExist:
+            return redirect("user_home_page")
     return render(request, "user_login.html")
 
 
@@ -92,10 +98,17 @@ def user_signout(request):
     except Officer.DoesNotExist:
         logout(request)
         return redirect("user_login")
+    logout(request)
     return redirect("officer_login")
 
 
 def officer_login(request):
+    if request.user.is_authenticated:
+        try:
+            officer_obj = Officer.objects.get(user=request.user)
+            return redirect("officer_home_page")
+        except Officer.DoesNotExist:
+            return redirect("user_home_page")
     return render(request, "officer_login.html")
 
 

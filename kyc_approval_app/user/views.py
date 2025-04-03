@@ -3,9 +3,8 @@ from Accounts.models import Citizen
 from .models import KYCRequest
 from django.utils import timezone
 
+
 # Create your views here.
-
-
 def request_kyc_approval(request):
     citizen_obj = Citizen.objects.get(user=request.user)
     full_name = citizen_obj.full_name
@@ -30,13 +29,17 @@ def submit_request(request):
     address_proof_name = request.POST.get("address_proof_name")
     id_proof_file = request.FILES["id_proof_file"]
     address_proof_file = request.FILES["address_proof_file"]
-    KYCRequest.objects.create(
+    new_request = KYCRequest.objects.create(
         citizen=citizen_obj,
         id_proof_name=id_proof_name,
         address_proof_name=address_proof_name,
         id_proof_file=id_proof_file,
         address_proof_file=address_proof_file,
     )
+    new_request.request_id = (
+        "KYC-" + timezone.now().strftime("%d-%m-%Y") + "-" + str(new_request.id)
+    )
+    new_request.save()
     return redirect("user_home_page")
 
 

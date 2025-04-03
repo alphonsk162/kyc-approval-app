@@ -14,20 +14,12 @@
         <div class="request-header">
             <div>
                 <h1>KYC Request Details</h1>
-                <p class="request-id">Request ID: {{ request_obj.request_id }}</p>
+                <p class="request-id">Request ID: {{ request_obj.request_obj.request_id }}</p>
             </div>
             <div class="request-status">
-                {% if request_obj.status == 'pending' %}
-                <span class="status pending">Pending</span>
-                {% elif request_obj.status == 'approved' %}
-                <span class="status approved">Approved</span>
-                {% else %}
-                <span class="status rejected">Rejected</span>
-                {% endif %}
 
-                <div>
-                    <a href="{% url 'show_log' request_obj.id %}" class="submission-log">Submission Log</a>
-                </div>
+                <span class="status rejected">Rejected</span>
+
 
             </div>
 
@@ -39,35 +31,19 @@
                 <div class="info-grid">
                     <div class="info-item">
                         <label>Full Name</label>
-                        {% if request_obj.status in 'approved rejected' %}
                         <p>{{ request_obj.request_full_name }}</p>
-                        {% else %}
-                        <p>{{ request_obj.citizen.full_name }}</p>
-                        {% endif %}
                     </div>
                     <div class="info-item">
                         <label>Date of Birth</label>
-                        {% if request_obj.status in 'approved rejected' %}
                         <p>{{ request_obj.request_dob|date:"d M Y"|default:"Not Provided" }}</p>
-                        {% else %}
-                        <p>{{ request_obj.citizen.dob|date:"d M Y"|default:"Not Provided" }}</p>
-                        {% endif %}
                     </div>
                     <div class="info-item">
                         <label>Gender</label>
-                        {% if request_obj.status in 'approved rejected' %}
                         <p>{{ request_obj.request_gender }}</p>
-                        {% else %}
-                        <p>{{ request_obj.citizen.gender }}</p>
-                        {% endif %}
                     </div>
                     <div class="info-item">
                         <label>Phone Number</label>
-                        {% if request_obj.status in 'approved rejected' %}
                         <p>{{ request_obj.request_phone_number}}</p>
-                        {% else %}
-                        <p>{{ request_obj.citizen.phone_number}}</p>
-                        {% endif %}
                     </div>
 
                 </div>
@@ -77,11 +53,7 @@
                 <h2>Contact Information</h2>
                 <div class="info-item full-width">
                     <label>Address</label>
-                    {% if request_obj.status in 'approved rejected' %}
                     <p>{{ request_obj.request_address }}</p>
-                    {% else %}
-                    <p>{{ request_obj.citizen.address }}</p>
-                    {% endif %}
                 </div>
             </div>
 
@@ -122,36 +94,15 @@
                         <label>Submitted At</label>
                         <p>{{ request_obj.submitted_at|date:"d M Y, H:i A" }}</p>
                     </div>
-                    {% if request_obj.reviewed_at %}
+
                     <div class="info-item">
                         <label>Reviewed At</label>
                         <p>{{ request_obj.reviewed_at|date:"d M Y, H:i A" }}</p>
                     </div>
-                    {% endif %}
+
                 </div>
             </div>
-            {% if request_obj.status == 'pending' %}
-            <form id="kyc-form" method="POST">
-                {% csrf_token %}
 
-                {% if request_obj.remarks %}
-                <div class="remarks section">
-                    <h2>Remarks</h2>
-                    <div class="remarks-content">
-                        <p>{{ request_obj.remarks }}</p>
-                    </div>
-                </div>
-                {% else %}
-                <textarea name="remarks" placeholder="Enter remarks"></textarea>
-                {% endif %}
-
-
-                <button type="submit" name="action" onclick="submitForm('{% url 'approve_request' request_obj.id %}')"
-                    value="approve" class="approve-btn">Approve</button>
-                <button type="submit" name="action" onclick="submitForm('{% url 'reject_request' request_obj.id %}')"
-                    value="reject" class="reject-btn">Reject</button>
-            </form>
-            {% endif %}
             {% if request_obj.remarks %}
             <div class="remarks section">
                 <h2>Remarks</h2>
@@ -164,11 +115,4 @@
 
     </div>
 
-    <script>
-        function submitForm(actionUrl) {
-            let form = document.getElementById('kyc-form');
-            form.action = actionUrl;
-            form.submit();
-        }
-    </script>
 </body>

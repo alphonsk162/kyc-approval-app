@@ -6,6 +6,9 @@ from .views import (
     approved_requests,
     reject_request,
     rejected_requests,
+    search_request,
+    show_log,
+    log_details,
 )
 
 urlpatterns = [
@@ -15,4 +18,7 @@ urlpatterns = [
     path("approved_requests", approved_requests, name="approved_requests"),
     path("reject_request/<int:id>/", reject_request, name="reject_request"),
     path("rejected_requests", rejected_requests, name="rejected_requests"),
+    path("search_request/", search_request, name="search_request"),
+    path("show_log/<int:id>/", show_log, name="show_log"),
+    path("log_details/<int:id>/", log_details, name="log_details"),
 ]

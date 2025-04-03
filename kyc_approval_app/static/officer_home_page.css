@@ -19,7 +19,7 @@ body {
     background-color: #ffffff;
     padding: 15px;
     border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
 
@@ -66,8 +66,13 @@ body {
     background-color: #ffffff;
     padding: 20px;
     border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: scale(1.05);
 }
 
 .stat-card h3 {
@@ -99,10 +104,10 @@ body {
     width: 100%;
     background-color: #ffffff;
     border-collapse: collapse;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.requests-table th, 
+.requests-table th,
 .requests-table td {
     border: 1px solid #ddd;
     padding: 12px;
@@ -149,5 +154,59 @@ body {
 
 .no-requests {
     text-align: center;
+    color: #666;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.search-container {
+    position: relative;
+    width: 300px;
+    margin-top: 1.5rem;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 5px 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 16px;
+    outline: none;
+}
+
+.search-icon {
+    position: absolute;
+    top: 35%;
+    right: -3px;
+    transform: translateY(-50%);
+    cursor: pointer;
     color: #666;
 }

@@ -51,6 +51,7 @@ class KYCRequest(models.Model):
     request_phone_number = models.CharField(max_length=20, null=True, blank=True)
     request_email = models.EmailField(null=True)
     reviewed_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    request_id = models.CharField(max_length=20, null=True)
 
     def __str__(self):
         return f"KYC Request for {self.citizen.full_name} - {self.status}"

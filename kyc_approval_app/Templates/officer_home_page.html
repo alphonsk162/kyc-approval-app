@@ -1,11 +1,13 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Officer Home Page</title>
     <link rel="stylesheet" type="text/css" href="{% static 'officer_home_page.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <div class="officer-dashboard">
     <header class="dashboard-header">
@@ -19,16 +21,16 @@
     <main class="dashboard-content">
         <section class="request-overview">
             <h2>Request Management</h2>
-            
+
             <div class="request-stats">
 
-                
+
                 <div class="stat-card approved">
                     <h3>Approved Requests</h3>
                     <p class="stat-number">{{ approved_requests_count }}</p>
                     <a href="{% url 'approved_requests' %}" class="view-btn">View Approved</a>
                 </div>
-                
+
                 <div class="stat-card rejected">
                     <h3>Rejected Requests</h3>
                     <p class="stat-number">{{ rejected_requests_count }}</p>
@@ -38,7 +40,18 @@
         </section>
 
         <section class="recent-requests">
-            <h2>Pending Requests</h2>
+            <div style="display: flex; gap:2rem;">
+                <h2>Pending Requests</h2>
+                <form class="search-container" method="post" action="{% url 'search_request' %}">
+                    {% csrf_token %}
+                    <input type="text" class="search-input" name='searchinput'
+                        placeholder="Search Name, Email, Phone, or ID...">
+                    <label for="submit-button"><i class="search-icon fas fa-search"></i></label>
+                    <button type="submit" style="display: none;" id="submit-button">
+
+                    </button>
+                </form>
+            </div>
             <table class="requests-table">
                 <thead>
                     <tr>
@@ -52,7 +65,7 @@
                 <tbody>
                     {% for request in pending_requests %}
                     <tr>
-                        <td>KYC-{{ request.submitted_at|date:"Y-m-d" }}-{{request.id}}</td>
+                        <td>{{request.request_id}}</td>
                         <td>{{ request.citizen.full_name}}</td>
                         <td>{{request.submitted_at|date:"Y-m-d" }}</td>
                         <td>
@@ -69,5 +82,3 @@
         </section>
     </main>
 </div>
-
-
