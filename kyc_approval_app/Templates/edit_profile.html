@@ -33,9 +33,9 @@
             <div class="form-group">
                 <label for="gender">Gender</label>
                 <select id="gender" name="gender" required>
-                    <option value="Male" {% if gender=="Male" %}selected{% endif %}>Male</option>
-                    <option value="Female" {% if gender=="Female" %}selected{% endif %}>Female</option>
-                    <option value="Other" {% if gender=="Other" %}selected{% endif %}>Other</option>
+                    <option value="Male" {% if gender == "Male" %}selected{% endif %}>Male</option>
+                    <option value="Female" {% if gender == "Female" %}selected{% endif %}>Female</option>
+                    <option value="Other" {% if gender == "Other" %}selected{% endif %}>Other</option>
                 </select>
             </div>
 

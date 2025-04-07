@@ -6,6 +6,7 @@ from user.models import KYCRequest
 from django.utils import timezone
 from .helper_functions import send_status_email
 from django.db.models import Q
+from .tasks import send_kyc_status_email_task
 
 # Create your views here.
 
@@ -26,11 +27,6 @@ def officer_home_page(request):
 def view_request(request, id):
     request_obj = KYCRequest.objects.get(id=id)
     context = {"request_obj": request_obj}
-    # try:
-    #     officer = Officer.objects.get(user=request.user)
-    #     context["officer"] = True
-    # except Officer.DoesNotExist:
-    #     pass
     return render(request, "view_request.html", context)
 
 
@@ -53,7 +49,8 @@ def approve_request(request, id):
     request_obj.request_address = request_obj.citizen.address
     request_obj.request_gender = request_obj.citizen.gender
     request_obj.save()
-    send_status_email(request_obj.citizen.user.email, request_obj)
+    # send_status_email(request_obj.citizen.user.email, request_obj)
+    send_kyc_status_email_task.delay(request_obj.citizen.user.email, id)
     return redirect("officer_home_page")
 
 
@@ -93,7 +90,9 @@ def reject_request(request, id):
         address_proof_file=request_obj.address_proof_file,
     )
     try:
-        send_status_email(request_obj.citizen.user.email, request_obj)
+        print('++++++++++++++++++++++++++++++++++++++++++=')
+        # send_status_email(request_obj.citizen.user.email, request_obj)
+        send_kyc_status_email_task.delay(request_obj.citizen.user.email, id)
         return redirect("officer_home_page")
     except Exception as e:
         return redirect("officer_home_page")
@@ -159,10 +158,6 @@ def search_request(request):
 
 @login_required(login_url="user_login")
 def show_log(request, id):
-    # try:
-    #     officer = Officer.objects.get(user=request.user)
-    # except Officer.DoesNotExist:
-    #     return redirect("user_home_page")
     request_obj = KYCRequest.objects.get(id=id)
     log = RejectedRequest.objects.filter(request_obj=request_obj)
     context = {"request_obj": request_obj, "log": log}
@@ -171,10 +166,6 @@ def show_log(request, id):
 
 @login_required(login_url="user_login")
 def log_details(request, id):
-    # try:
-    #     officer = Officer.objects.get(user=request.user)
-    # except Officer.DoesNotExist:
-    #     return redirect("user_home_page")
     request_obj = RejectedRequest.objects.get(id=id)
     context = {"request_obj": request_obj}
     return render(request, "log_details.html", context)

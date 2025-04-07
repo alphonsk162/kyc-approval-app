@@ -3,8 +3,8 @@
 <body>
     <p>Dear {{ kyc_request.citizen.full_name }},</p>
 
-    <p>Your KYC request, submitted on {{ kyc_request.submitted_at|date:"d F Y" }}, has been {{
-        kyc_request.status|capfirst }}.</p>
+    <p>Your KYC request, submitted on {{kyc_request.submitted_at|date:"d F Y"}}, has been
+        {{kyc_request.status|capfirst}}.</p>
 
     {% if kyc_request.remarks %}
     <p><strong>Remarks from the officer:</strong> {{ kyc_request.remarks }}</p>

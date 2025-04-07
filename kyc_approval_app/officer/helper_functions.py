@@ -10,6 +10,7 @@ def send_status_email(to_email, kyc_request):
         "kyc_status_email.html", {"kyc_request": kyc_request}
     )
     message_plain = strip_tags(message_html)
+    print(message_plain)
     send_mail(
         subject,
         message_plain,

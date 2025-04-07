@@ -11,7 +11,13 @@
 </head>
 
 <body>
+   
     <div class="container">
+        <div style="display: flex ; justify-content: space-between;">
+        <p class="request-id">Request ID: {{ kyc_request.request_id }}</p>
+
+        <a href="{% url 'show_log' kyc_request.id %}" class="submission-log">Submission Log</a>
+        </div>
         <form method="post" enctype="multipart/form-data" action="{% url 'update_kyc_request' kyc_request.id %}">
             {% csrf_token %}
 
@@ -53,15 +59,15 @@
                     <label for="id_proof_name">ID Proof Type</label>
                     <select id="id_proof_name" name="id_proof_name" required>
                         <option value="">Select ID Proof Type</option>
-                        <option value="Aadhaar" {% if kyc_request.id_proof_name=="Aadhaar" %}selected{% endif %}>Aadhaar
+                        <option value="Aadhaar" {% if kyc_request.id_proof_name == "Aadhaar" %}selected{% endif %}>Aadhaar
                         </option>
-                        <option value="PAN" {% if kyc_request.id_proof_name=="PAN" %}selected{% endif %}>PAN Card
+                        <option value="PAN" {% if kyc_request.id_proof_name == "PAN" %}selected{% endif %}>PAN Card
                         </option>
-                        <option value="DL" {% if kyc_request.id_proof_name=="DL" %}selected{% endif %}>Driving License
+                        <option value="DL" {% if kyc_request.id_proof_name == "DL" %}selected{% endif %}>Driving License
                         </option>
-                        <option value="Passport" {% if kyc_request.id_proof_name=="Passport" %}selected{% endif %}>
+                        <option value="Passport" {% if kyc_request.id_proof_name == "Passport" %}selected{% endif %}>
                             Passport</option>
-                        <option value="Voter ID" {% if kyc_request.id_proof_name=="Voter ID" %}selected{% endif %}>Voter
+                        <option value="Voter ID" {% if kyc_request.id_proof_name == "Voter ID" %}selected{% endif %}>Voter
                             ID</option>
                     </select>
                 </div>
@@ -88,20 +94,20 @@
                     <label for="address_proof_name">Address Proof Type</label>
                     <select id="address_proof_name" name="address_proof_name" required>
                         <option value="">Select Address Proof Type</option>
-                        <option value="Aadhaar" {% if kyc_request.address_proof_name=="Aadhaar" %}selected{% endif %}>
+                        <option value="Aadhaar" {% if kyc_request.address_proof_name == "Aadhaar" %}selected{% endif %}>
                             Aadhaar</option>
-                        <option value="Passport" {% if kyc_request.address_proof_name=="Passport" %}selected{% endif %}>
+                        <option value="Passport" {% if kyc_request.address_proof_name == "Passport" %}selected{% endif %}>
                             Passport</option>
-                        <option value="Voter ID" {% if kyc_request.address_proof_name=="Voter ID" %}selected{% endif %}>
+                        <option value="Voter ID" {% if kyc_request.address_proof_name == "Voter ID" %}selected{% endif %}>
                             Voter ID</option>
-                        <option value="Electricity Bill" {% if kyc_request.address_proof_name=="Electricity Bill"
-                            %}selected{% endif %}>Electricity Bill</option>
-                        <option value="Water Bill" {% if kyc_request.address_proof_name=="Water Bill" %}selected{% endif
+                        <option value="Electricity Bill" {% if kyc_request.address_proof_name == "Electricity Bill"%}selected{% endif %}>
+                            Electricity Bill</option>
+                        <option value="Water Bill" {% if kyc_request.address_proof_name == "Water Bill" %}selected{% endif
                             %}>Water Bill</option>
-                        <option value="Bank Statement" {% if kyc_request.address_proof_name=="Bank Statement"
+                        <option value="Bank Statement" {% if kyc_request.address_proof_name == "Bank Statement"
                             %}selected{% endif %}>Bank Statement</option>
-                        <option value="Rent Agreement" {% if kyc_request.address_proof_name=="Rent Agreement"
-                            %}selected{% endif %}>Rent Agreement</option>
+                        <option value="Rent Agreement" {% if kyc_request.address_proof_name == "Rent Agreement"%}selected{% endif %}>
+                            Rent Agreement</option>
                     </select>
                 </div>
 
