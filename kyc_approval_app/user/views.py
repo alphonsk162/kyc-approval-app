@@ -8,31 +8,30 @@ from django.contrib.auth.models import User
 from .helper_functions import validate, find_submitted_requests
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth.decorators import login_not_required
 from officer.models import Officer
+from django.http import HttpResponseForbidden
 # Create your views here.
 
-@login_not_required
 def user_signup(request):
     if request.user.is_authenticated:
-        try:
-            officer_obj = Officer.objects.get(user=request.user)
-            return redirect("officer_home_page")
-        except Officer.DoesNotExist:
-            return redirect("user_home_page")
+        # try:
+        #     officer_obj = Officer.objects.get(user=request.user)
+        #     return redirect("officer_home_page")
+        # except Officer.DoesNotExist:
+        #     return redirect("user_home_page")
+        logout(request)
     return render(request, "user_signup.html")
 
-@login_not_required
 def user_login(request):
     if request.user.is_authenticated:
-        try:
-            officer_obj = Officer.objects.get(user=request.user)
-            return redirect("officer_home_page")
-        except Officer.DoesNotExist:
-            return redirect("user_home_page")
+        # try:
+        #     officer_obj = Officer.objects.get(user=request.user)
+        #     return redirect("officer_home_page")
+        # except Officer.DoesNotExist:
+        #     return redirect("user_home_page")
+        logout(request)
     return render(request, "user_login.html")
 
-@login_not_required
 def register_user(request):
     if request.POST:
         full_name = request.POST.get("fullname")
@@ -54,17 +53,16 @@ def register_user(request):
                 full_name=full_name,
                 dob=dob,
                 address=address,
-                phone_number=phone_number[::-1][:10][::-1],
+                phone_number=phone_number,
                 gender=gender,
             )
     return render(request, "user_signup.html")
 
-
-
 def user_home_page(request):
     try:
         officer = Officer.objects.get(user=request.user)
-        return redirect('officer_home_page')
+        logout(request)
+        return redirect('kyc_app')
     except Officer.DoesNotExist:
         user = request.user
         citizen_obj = Citizen.objects.get(user=user)
@@ -76,7 +74,6 @@ def user_home_page(request):
         }
         return render(request, "user_home_page.html", context)
 
-@login_not_required
 def user_signin(request):
     if request.POST.get("email"):
         username = request.POST.get("email")
@@ -104,18 +101,14 @@ def user_signin(request):
             return redirect("user_login")
 
 def user_signout(request):
-    try:
-        officer = Officer.objects.get(user=request.user)
-    except Officer.DoesNotExist:
-        logout(request)
-        return redirect("user_login")
     logout(request)
-    return redirect("officer_login")
+    return redirect("kyc_app")
 
 def request_kyc_approval(request):
     try:
         officer = Officer.objects.get(user=request.user)
-        return redirect('officer_home_page')
+        logout(request)
+        return redirect('kyc_app')
     except Officer.DoesNotExist:
         citizen_obj = Citizen.objects.get(user=request.user)
         full_name = citizen_obj.full_name
@@ -137,7 +130,8 @@ def request_kyc_approval(request):
 def submit_request(request):
     try:
         officer = Officer.objects.get(user=request.user)
-        return redirect('officer_home_page')
+        logout(request)
+        return redirect('kyc_app')
     except Officer.DoesNotExist:
         citizen_obj = Citizen.objects.get(user=request.user)
         id_proof_name = request.POST.get("id_proof_name")
@@ -161,7 +155,8 @@ def submit_request(request):
 def edit_profile(request):
     try:
         officer = Officer.objects.get(user=request.user)
-        return redirect('officer_home_page')
+        logout(request)
+        return redirect('kyc_app')
     except Officer.DoesNotExist:
         citizen_obj = Citizen.objects.get(user=request.user)
         full_name = citizen_obj.full_name
@@ -183,7 +178,8 @@ def edit_profile(request):
 def update_profile(request):
     try:
         officer = Officer.objects.get(user=request.user)
-        return redirect('officer_home_page')
+        logout(request)
+        return redirect('kyc_app')
     except Officer.DoesNotExist:
         citizen_obj = Citizen.objects.get(user=request.user)
         full_name = request.POST.get("full_name")
@@ -207,10 +203,13 @@ def update_profile(request):
 def edit_submission(request, id):
     try:
         officer = Officer.objects.get(user=request.user)
-        return redirect('officer_home_page')
+        logout(request)
+        return redirect('kyc_app')
     except Officer.DoesNotExist:
         kyc_request = KYCRequest.objects.get(id=id)
         citizen_obj = Citizen.objects.get(user=request.user)
+        if kyc_request.citizen != citizen_obj:
+            return HttpResponseForbidden("You are not allowed to view this request.")
         full_name = citizen_obj.full_name
         dob = citizen_obj.dob
         gender = citizen_obj.gender
@@ -231,7 +230,8 @@ def edit_submission(request, id):
 def update_kyc_request(request, id):
     try:
         officer = Officer.objects.get(user=request.user)
-        return redirect('officer_home_page')
+        logout(request)
+        return redirect('kyc_app')
     except Officer.DoesNotExist:
         kyc_request = KYCRequest.objects.get(id=id)
         id_proof_name = request.POST.get("id_proof_name")

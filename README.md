@@ -91,11 +91,13 @@ Visit: http://127.0.0.1:8000/
 │   │   ├── asgi.py
 │   │   ├── celery.py
 │   │   ├── __init__.py
+│   │   ├── middleware
 │   │   ├── migrations
 │   │   ├── models.py
 │   │   ├── __pycache__
 │   │   ├── settings.py
 │   │   ├── urls.py
+│   │   ├── views.py
 │   │   └── wsgi.py
 │   ├── manage.py
 │   ├── media
@@ -116,6 +118,7 @@ Visit: http://127.0.0.1:8000/
 │   ├── sample.env
 │   ├── static
 │   │   ├── edit_profile.css
+│   │   ├── index.css
 │   │   ├── kyc_submission.css
 │   │   ├── messages.css
 │   │   ├── officer_home_page.css
@@ -126,6 +129,7 @@ Visit: http://127.0.0.1:8000/
 │   ├── templates
 │   │   ├── edit_profile.html
 │   │   ├── edit_submission.html
+│   │   ├── index.html
 │   │   ├── kyc_request_form.html
 │   │   ├── kyc_status_email.html
 │   │   ├── list_requests.html
@@ -150,5 +154,5 @@ Visit: http://127.0.0.1:8000/
 │       └── views.py
 ├── README.md
 ├── requirements.txt
-└── venv
+
 ```

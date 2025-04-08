@@ -52,9 +52,9 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "django.contrib.auth.middleware.LoginRequiredMiddleware",
+    "kyc_approval_app.middleware.login_required_middleware.LoginRequiredMiddleware",
 ]
-LOGIN_URL = 'kyc_app'
+# LOGIN_URL = 'kyc_app'
 ROOT_URLCONF = "kyc_approval_app.urls"
 
 TEMPLATES = [

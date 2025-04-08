@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from kyc_approval_app.models import RejectedRequest, KYCRequest
 from .models import Officer
-from django.contrib.auth.decorators import login_not_required
+from user.models import Citizen
 from kyc_approval_app.models import KYCRequest
 from django.utils import timezone
 from .helper_functions import send_status_email
@@ -9,9 +9,10 @@ from django.db.models import Q
 from .tasks import send_kyc_status_email_task
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.http import HttpResponseForbidden
 
 # Create your views here.
-@login_not_required
+
 def officer_login(request):
     if request.user.is_authenticated:
         try:
@@ -21,7 +22,6 @@ def officer_login(request):
             return redirect("user_home_page")
     return render(request, "officer_login.html")
 
-@login_not_required
 def officer_signin(request):
     username = request.POST.get("username")
     password = request.POST.get("password")
@@ -44,7 +44,8 @@ def officer_home_page(request):
     try:
         officer = Officer.objects.get(user=request.user)
     except Officer.DoesNotExist:
-        return redirect("user_home_page")
+        logout(request)
+        return redirect("kyc_app")
     pending_requests = list(KYCRequest.objects.filter(status="pending"))
     officer_name = request.user.username
     context = {"officer_name": officer_name, "pending_requests": pending_requests}
@@ -53,13 +54,17 @@ def officer_home_page(request):
 
 
 def view_request(request, id):
+    request_obj = KYCRequest.objects.get(id=id)
     try:
         officer = Officer.objects.get(user=request.user)
+        context = {"request_obj": request_obj}
+        return render(request, "view_request.html", context)
     except Officer.DoesNotExist:
-        return redirect("user_home_page")
-    request_obj = KYCRequest.objects.get(id=id)
-    context = {"request_obj": request_obj}
-    return render(request, "view_request.html", context)
+        citizen_obj = Citizen.objects.get(user=request.user)
+        if request_obj.citizen != citizen_obj:
+            return HttpResponseForbidden("You are not allowed to view this request.")
+        context = {"request_obj": request_obj}
+        return render(request, "view_request.html", context)
 
 
 
@@ -67,7 +72,8 @@ def approve_request(request, id):
     try:
         officer = Officer.objects.get(user=request.user)
     except Officer.DoesNotExist:
-        return redirect("user_home_page")
+        logout(request)
+        return redirect("kyc_app")
     request_obj = KYCRequest.objects.get(id=id)
     request_obj.reviewed_at = timezone.now()
     request_obj.reviewed_by = officer.user
@@ -91,7 +97,8 @@ def reject_request(request, id):
     try:
         officer = Officer.objects.get(user=request.user)
     except Officer.DoesNotExist:
-        return redirect("user_home_page")
+        logout(request)
+        return redirect("kyc_app")
     request_obj = KYCRequest.objects.get(id=id)
     request_obj.status = "rejected"
     remarks = request.POST.get("remarks")
@@ -134,7 +141,8 @@ def approved_requests(request):
     try:
         officer = Officer.objects.get(user=request.user)
     except Officer.DoesNotExist:
-        return redirect("user_home_page")
+        logout(request)
+        return redirect("kyc_app")
     approved_requests = KYCRequest.objects.filter(
         status="approved", reviewed_by=officer.user
     ).order_by("-reviewed_at")
@@ -150,7 +158,8 @@ def rejected_requests(request):
     try:
         officer = Officer.objects.get(user=request.user)
     except Officer.DoesNotExist:
-        return redirect("user_home_page")
+        logout(request)
+        return redirect("kyc_app")
     rejected_requests = KYCRequest.objects.filter(
         status="rejected", reviewed_by=officer.user
     ).order_by("-reviewed_at")
@@ -166,7 +175,8 @@ def search_request(request):
     try:
         officer = Officer.objects.get(user=request.user)
     except Officer.DoesNotExist:
-        return redirect("user_home_page")
+        logout(request)
+        return redirect("kyc_app")
     search_input = request.POST.get("searchinput")
 
     requests = KYCRequest.objects.filter(
@@ -192,11 +202,23 @@ def show_log(request, id):
     request_obj = KYCRequest.objects.get(id=id)
     log = RejectedRequest.objects.filter(request_obj=request_obj)
     context = {"request_obj": request_obj, "log": log}
-    return render(request, "log_list.html", context)
-
-
+    try:
+        officer = Officer.objects.get(user=request.user)
+        return render(request, "log_list.html", context)
+    except Officer.DoesNotExist:
+        citizen_obj = Citizen.objects.get(user=request.user)
+        if request_obj.citizen != citizen_obj:
+            return HttpResponseForbidden("You are not allowed to view this request.")
+        return render(request, "log_list.html", context)
 
 def log_details(request, id):
     request_obj = RejectedRequest.objects.get(id=id)
     context = {"request_obj": request_obj}
-    return render(request, "log_details.html", context)
+    try:
+        officer = Officer.objects.get(user=request.user)
+        return render(request, "log_details.html", context)
+    except Officer.DoesNotExist:
+        citizen_obj = Citizen.objects.get(user=request.user)
+        if request_obj.citizen != citizen_obj:
+            return HttpResponseForbidden("You are not allowed to view this request.")
+        return render(request, "log_details.html", context)
