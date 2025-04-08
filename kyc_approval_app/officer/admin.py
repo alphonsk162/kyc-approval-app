@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import RejectedRequest
+from .models import Officer
 
 # Register your models here.
 
 
-admin.site.register(RejectedRequest)
+admin.site.register(Officer)

@@ -67,7 +67,7 @@
                     <tr>
                         <td>{{request.request_id}}</td>
                         <td>{{ request.citizen.full_name}}</td>
-                        <td>{{request.submitted_at|date:"Y-m-d" }}</td>
+                        <td>{{request.submitted_at|date:"d M Y" }}</td>
                         <td>
                             <a href="{% url 'view_request' request.id %}" class="action-btn review">Review</a>
                         </td>

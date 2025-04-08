@@ -44,9 +44,9 @@
                 {% else %}
                 <td>{{ request.citizen.full_name}}</td>
                 {% endif %}
-                <td>{{request.submitted_at|date:"Y-m-d" }}</td>
+                <td>{{request.submitted_at|date:"d M Y"}}</td>
                 {% if request.status == 'rejected'%}
-                <td>{{request.reviewed_at|date:"Y-m-d" }}</td>
+                <td>{{request.reviewed_at|date:"d M Y" }}</td>
                 {% endif %}
                 <td>
                     <a href="{% url 'view_request' request.id %}" class="action-btn review">View Details</a>

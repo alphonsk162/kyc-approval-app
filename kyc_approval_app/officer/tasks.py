@@ -1,6 +1,6 @@
 from celery import shared_task
 from .helper_functions import send_status_email
-from user.models import KYCRequest
+from kyc_approval_app.models import KYCRequest
 
 @shared_task
 def send_kyc_status_email_task(to_email, id):

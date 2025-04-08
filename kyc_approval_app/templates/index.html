@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KYC Verification System</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'index.css' %}">
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">KYC Verification System</div>
+        </div>
+    </header>
+    
+    <main class="container">
+        <section class="hero">
+            <h1>Secure KYC Verification</h1>
+            <p>Our KYC (Know Your Customer) system provides a streamlined process for identity verification. Submit your documents once and get verified quickly by our verification officers.</p>
+        </section>
+        
+        <section class="card-container">
+            <div class="card">
+                <h2>Already Registered?</h2>
+                <p>Log in to your existing account to check your verification status or submit new KYC requests.</p>
+                <a href="{%url 'user_login'%}" class="btn">Sign In</a>
+            </div>
+            
+            <div class="card">
+                <h2>New User?</h2>
+                <p>Create a new account to start the KYC verification process and submit your documents.</p>
+                <a href="{%url 'user_signup'%}" class="btn">Sign Up</a>
+            </div>
+        </section>
+        
+        <section class="features">
+            <div class="feature">
+
+                <div class="feature-content">
+                    <h3>Secure Verification</h3>
+                    <p>Your documents and personal information are handled with the highest level of security.</p>
+                </div>
+            </div>
+            
+            <div class="feature">
+
+                <div class="feature-content">
+                    <h3>Quick Processing</h3>
+                    <p>Get your identity verified quickly with our streamlined approval process.</p>
+                </div>
+            </div>
+            
+            <div class="feature">
+
+                <div class="feature-content">
+                    <h3>Easy Submission</h3>
+                    <p>Simple and intuitive interface for submitting your identification documents.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="officer-section">
+            <h2>Verification Officers</h2>
+            <p>If you are a verification officer, please use the link below to access the verification dashboard.</p>
+            <a href="{%url 'officer_login'%}" class="btn btn-outline">Officer Login</a>
+        </section>
+    </main>
+
+</body>
+</html>

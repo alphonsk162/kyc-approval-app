@@ -1,17 +1,45 @@
 from django.shortcuts import render, redirect
-from .models import RejectedRequest
-from Accounts.models import Officer
-from django.contrib.auth.decorators import login_required
-from user.models import KYCRequest
+from kyc_approval_app.models import RejectedRequest, KYCRequest
+from .models import Officer
+from django.contrib.auth.decorators import login_not_required
+from kyc_approval_app.models import KYCRequest
 from django.utils import timezone
 from .helper_functions import send_status_email
 from django.db.models import Q
 from .tasks import send_kyc_status_email_task
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 
 # Create your views here.
+@login_not_required
+def officer_login(request):
+    if request.user.is_authenticated:
+        try:
+            officer_obj = Officer.objects.get(user=request.user)
+            return redirect("officer_home_page")
+        except Officer.DoesNotExist:
+            return redirect("user_home_page")
+    return render(request, "officer_login.html")
+
+@login_not_required
+def officer_signin(request):
+    username = request.POST.get("username")
+    password = request.POST.get("password")
+    try:
+        officer_obj = Officer.objects.get(username=username)
+    except Officer.DoesNotExist:
+        officer_obj = None
+        messages.error(request, "Invalid Username or password")
+        return redirect("officer_login")
+    user = authenticate(request, username=username, password=password)
+    if user:
+        login(request, user)
+        return redirect("officer_home_page")
+    else:
+        messages.error(request, "Invalid email id or password")
+        return redirect("officer_login")
 
 
-@login_required(login_url="officer_login")
 def officer_home_page(request):
     try:
         officer = Officer.objects.get(user=request.user)
@@ -23,14 +51,18 @@ def officer_home_page(request):
     return render(request, "officer_home_page.html", context)
 
 
-@login_required(login_url="officer_login")
+
 def view_request(request, id):
+    try:
+        officer = Officer.objects.get(user=request.user)
+    except Officer.DoesNotExist:
+        return redirect("user_home_page")
     request_obj = KYCRequest.objects.get(id=id)
     context = {"request_obj": request_obj}
     return render(request, "view_request.html", context)
 
 
-@login_required(login_url="officer_login")
+
 def approve_request(request, id):
     try:
         officer = Officer.objects.get(user=request.user)
@@ -54,7 +86,7 @@ def approve_request(request, id):
     return redirect("officer_home_page")
 
 
-@login_required(login_url="officer_login")
+
 def reject_request(request, id):
     try:
         officer = Officer.objects.get(user=request.user)
@@ -90,7 +122,6 @@ def reject_request(request, id):
         address_proof_file=request_obj.address_proof_file,
     )
     try:
-        print('++++++++++++++++++++++++++++++++++++++++++=')
         # send_status_email(request_obj.citizen.user.email, request_obj)
         send_kyc_status_email_task.delay(request_obj.citizen.user.email, id)
         return redirect("officer_home_page")
@@ -98,7 +129,7 @@ def reject_request(request, id):
         return redirect("officer_home_page")
 
 
-@login_required(login_url="officer_login")
+
 def approved_requests(request):
     try:
         officer = Officer.objects.get(user=request.user)
@@ -114,7 +145,7 @@ def approved_requests(request):
     )
 
 
-@login_required(login_url="officer_login")
+
 def rejected_requests(request):
     try:
         officer = Officer.objects.get(user=request.user)
@@ -130,7 +161,7 @@ def rejected_requests(request):
     )
 
 
-@login_required(login_url="officer_login")
+
 def search_request(request):
     try:
         officer = Officer.objects.get(user=request.user)
@@ -156,7 +187,7 @@ def search_request(request):
     return render(request, "list_requests.html", context)
 
 
-@login_required(login_url="user_login")
+
 def show_log(request, id):
     request_obj = KYCRequest.objects.get(id=id)
     log = RejectedRequest.objects.filter(request_obj=request_obj)
@@ -164,7 +195,7 @@ def show_log(request, id):
     return render(request, "log_list.html", context)
 
 
-@login_required(login_url="user_login")
+
 def log_details(request, id):
     request_obj = RejectedRequest.objects.get(id=id)
     context = {"request_obj": request_obj}

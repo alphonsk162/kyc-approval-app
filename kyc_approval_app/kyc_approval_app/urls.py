@@ -18,10 +18,12 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
-
+from .views import (
+    kyc_app)
 urlpatterns = [
+    path('', kyc_app, name="kyc_app"),
+    path('', include('user.urls')),
     path('admin/', admin.site.urls),
-    path('', include('Accounts.urls')),
     path('', include('user.urls')),
     path('', include('officer.urls')),
 ]

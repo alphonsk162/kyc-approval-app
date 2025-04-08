@@ -25,8 +25,8 @@
         <tbody>
             {% for request in log %}
             <tr>
-                <td>{{request.submitted_at|date:"Y-m-d" }}</td>
-                <td>{{request.reviewed_at|date:"Y-m-d" }}</td>
+                <td>{{request.submitted_at|date:"d M Y"}}</td>
+                <td>{{request.reviewed_at|date:"d M Y"}}</td>
                 <td>{{request.remarks}}</td>
                 <td>
                     <a href="{% url 'log_details' request.id %}" class="action-btn review">View Details</a>

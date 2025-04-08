@@ -2,7 +2,7 @@ from .models import Citizen
 from django.contrib import messages
 from django.contrib.auth.models import User
 import phonenumbers
-from user.models import KYCRequest
+from kyc_approval_app.models import KYCRequest
 
 
 def validate(request, password, password_copy, email_id, phone_number):

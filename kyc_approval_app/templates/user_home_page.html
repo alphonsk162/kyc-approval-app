@@ -52,7 +52,7 @@
                     {% for request in requests %}
                     <tr>
                         <td>KYC-{{ request.submitted_at|date:"Y-m-d" }}-{{request.id}}</td>
-                        <td>{{ request.submitted_at|date:"Y-m-d" }}</td>
+                        <td>{{ request.submitted_at|date:"d M Y" }}</td>
                         <td class="status-{{request.status}}">{{ request.status|upper }}</td>
                         {% if request.status == 'approved' %}
                         <td>
